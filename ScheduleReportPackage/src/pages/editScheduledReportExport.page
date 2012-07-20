@@ -1,0 +1,79 @@
+<apex:page standardController="Scheduled_Report_Export__c" extensions="scheduledReportExportControllerExtension">
+
+<apex:form >
+	<apex:sectionHeader title="Scheduled Report Export {!context}" subtitle="{!IF(context!='New',Scheduled_Report_Export__c.Name,'')}"/>
+	<apex:pageMessages />
+	<apex:pageBlock title="Scheduled Report Export {!context}" mode="edit">
+		<apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save"/>
+            <apex:commandButton action="{!cancel}" value="Cancel"/>
+        </apex:pageBlockButtons>
+      	<apex:pageblocksection columns="2" id="sreport">   
+        	<apex:pageBlockSectionItem >
+        		<apex:outputLabel value="Report" />
+	        	<apex:selectList id="reportId" styleclass="std" size="1" required="true" value="{!Scheduled_Report_Export__c.Report_Id__c}">
+	                    <apex:selectOptions value="{!ReportSelectList}"/>
+	                    <apex:actionSupport event="onchange" action="{!setName}" rerender="sreport" />
+	             </apex:selectList>
+             </apex:pageBlockSectionItem>
+             <apex:inputfield value="{!Scheduled_Report_Export__c.Active__c}" />
+             <apex:pageBlockSectionItem id="reportDescription" rendered="{!context!='New'}">
+	             <apex:outputLabel value="Description" />
+	        	 <apex:outputText value="{!report.Description}" />
+             </apex:pageBlockSectionItem>
+             <apex:inputfield value="{!Scheduled_Report_Export__c.OwnerId}" />
+             <apex:pageBlockSectionItem id="reportLastRun" rendered="{!context!='New'}">
+	             <apex:outputLabel value="Last Run Date" />
+	        	 <apex:outputText value="{!report.LastRunDate}" />
+             </apex:pageBlockSectionItem>
+    	</apex:pageblocksection>    
+    	<apex:pageblocksection columns="2" id="schedule" title="Schedule">  
+        	<apex:repeat value="{!$ObjectType.Scheduled_Report_Export__c.FieldSets.Schedule}" var="f">  
+        		<apex:inputfield value="{!Scheduled_Report_Export__c[f]}" />
+       		</apex:repeat>  
+    	</apex:pageblocksection>
+    	<apex:pageblocksection columns="2" id="recipient" title="Email Recipients"> 
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel value="Add Recipients" />
+				<apex:outputPanel id="addRecepients">
+				<apex:actionRegion >
+				<apex:outputText value="{!Scheduled_Report_Export__c.UncommittedRecipientUser__c}" rendered="false" />
+		            <apex:inputText id="userFilter" value="{!recipientName}"  onkeypress="return noenter(event);">
+		            	<c:autoComplete2 objectname="User" additionalfield="FirstName" autocomplete_textbox="{!$Component.userFilter}" />
+		    		</apex:inputText>
+		    		<apex:inputText id="userFilter_lkid" value="{!recipientId}" style="display:none;"/>
+		    		<apex:commandButton value="Add" action="{!addRecipient}" reRender="addRecepients" /> 	    		
+		    		<br />
+		    		<apex:repeat value="{!Recipients}" var="recipient" id="recipients">
+				        <!-- user -->
+				        <apex:outputLink value="/{!recipient.Recipient__c}" id="recIdUser" title="View {!recipient.Name}'s profile" rendered="{!recipient.Recipient__c!=null}" style="{!IF(NOT(ISNULL(recipient.Id)),'','background: #ffff00;font-style:italic;')}">{!recipient.Name}</apex:outputLink>
+				        <apex:commandLink action="{!removeRecipient}" id="removeRecipient" rerender="addRecepients" title="Remove {!recipient.Name} as recipient" rendered="{!recipient.Recipient__c!=null}">
+				        	<apex:image url="/img/func_icons/remove12_on.gif" />
+				        	<apex:param value="{!IF(NOT(ISNULL(recipient.Id)), recipient.Id, recipient.Recipient__c)}" name="recId" assignTo="{!recipientRemoveId}" />
+				        </apex:commandLink>
+				        <!-- user -->
+				        <apex:outputText value="{!recipient.Custom_Email__c}" id="recIdEmail" title="{!recipient.Custom_Email__c}" rendered="{!recipient.Custom_Email__c!=null}" style="{!IF(NOT(ISNULL(recipient.Id)),'','background: #ffff00;font-style:italic;')}" />
+				        <apex:commandLink action="{!removeRecipient}" id="removeEmailRecipient" rerender="addRecepients" title="Remove {!recipient.Custom_Email__c} as recipient" rendered="{!recipient.Custom_Email__c!=null}">
+				        	<apex:image url="/img/func_icons/remove12_on.gif" />
+				        	<apex:param value="{!IF(NOT(ISNULL(recipient.Id)), recipient.Id, recipient.Custom_Email__c)}" name="recId" assignTo="{!recipientRemoveId}" />
+				        </apex:commandLink>
+				    </apex:repeat>   
+				    </apex:actionRegion>		
+	  			</apex:outputPanel>
+			</apex:pageBlockSectionItem>
+			<apex:inputField value="{!Scheduled_Report_Export__c.Send_to_me__c}" />
+			<apex:pageBlockSectionItem />
+			
+		</apex:pageblocksection>
+		<apex:pageblocksection columns="2" id="addOptions" title="Additional Options">
+			<apex:pageBlockSectionItem >
+        		<apex:outputLabel value="Email Template" />
+	        	<apex:selectList id="emailTemplateId" styleclass="std" required="true" size="1" value="{!Scheduled_Report_Export__c.Email_Template_Id__c}">
+	                    <apex:selectOptions value="{!EmailTemplateSelectList}"/>
+	             </apex:selectList>
+            </apex:pageBlockSectionItem>
+            <apex:inputField value="{!Scheduled_Report_Export__c.Save_Result__c}" />
+		</apex:pageblocksection> 
+	</apex:pageBlock>
+</apex:form>
+</apex:page>

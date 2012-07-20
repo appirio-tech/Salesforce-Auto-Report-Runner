@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scheduled Report Exports</fullName>
+    <description>Scheduled Report Exports
+http://www.cloudspokes.com/challenge_detail.html?contestID=344</description>
+    <types>
+        <members>ExportReport</members>
+        <name>ApexClass</name>
+    </types>
+    <version>23.0</version>
+</Package>

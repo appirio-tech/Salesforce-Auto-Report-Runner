@@ -1,0 +1,13 @@
+#Tue Nov 22 17:31:35 GMT 2011
+eclipse.preferences.version=1
+endpointApiVersion=23.0
+endpointEnvironment=Production/Developer Edition
+endpointServer=www.salesforce.com
+httpsProtocol=true
+ideVersion=23.0
+keependpoint=false
+metadataFormatVersion=23.0
+namespacePrefix=
+packageName=Scheduled Report Exports
+readTimeout=400
+username=andy@schedulereport.com

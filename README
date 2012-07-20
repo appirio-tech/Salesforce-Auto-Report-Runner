@@ -1,0 +1,25 @@
+Challenge Requirements
+
+Report Selection - User should be able to open the “Schedule Excel Report” page and select from a list of available Reports
+
+Recipient(s) - User should be able to define a list of Users and optional email addresses, comma separated.
+
+Schedule Frequency
+
+Day of the Week - Ability to choose specific days of the week to send report
+
+Start Date / End Date - Required to choose a range of dates that the scheduled job will be eligible for.
+
+Time of Day - User should be able to select a time of day that the job should execute.
+
+Email Template - to facilitate ease of customization, a default Email Template should be created as part of this project. The contents should be similar to the out-of-the-box SFDC scheduled report email format. The existence of this Template should be required upon save of the Schedule Excel Report record. 
+
+The recipient of the email does not have to be a SFDC user. 
+
+List View - User should have a list-view interface for viewing existing 
+
+Scheduled Excel Report records. Include a status/message field for tracking an execution error messages. 
+
+Include capabilities to start/stop future Scheduled Excel Report jobs. 
+
+Upon execution, the apex code should execute the report, create a new Email message and attach the report output to the email as an Excel attachment.

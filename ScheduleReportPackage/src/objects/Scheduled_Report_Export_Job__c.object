@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>History of Scheduled Report Export Jobs</description>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Action__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Results_Saved__c , IMAGE(&apos;http://cdn4.iconfinder.com/data/icons/fugue/icon/paper-clip.png&apos;, &apos;Results Attached&apos;), &apos;&apos;) + &apos; &apos; +
+IF( Results_Sent__c , IMAGE(&apos;/img/func_icons/util/mailFrontEnv16.gif&apos;, &apos;Results Emailed&apos;) , &apos;&apos;)</formula>
+        <label>Action</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Completion_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Completion Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Email_Recipients__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Email addresses that the report was sent to</inlineHelpText>
+        <label>Email Recipients</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Failure_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Failure Reason</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Results_Saved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used for image formula to show the results have been saved</description>
+        <externalId>false</externalId>
+        <label>Results Saved</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Results_Sent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used for image formula to show the results have been sent by email</description>
+        <externalId>false</externalId>
+        <label>Results Sent</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Scheduled_Report_Export__c</fullName>
+        <externalId>false</externalId>
+        <label>Scheduled Report Export</label>
+        <referenceTo>Scheduled_Report_Export__c</referenceTo>
+        <relationshipLabel>Export Jobs</relationshipLabel>
+        <relationshipName>Export_Jobs</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>In Progress</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Success</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Failed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Submitted_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Submitted Date</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Success__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Success</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Describes how the Export was executed</inlineHelpText>
+        <label>Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Manual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Scheduled</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <label>Scheduled Report Export Job</label>
+    <nameField>
+        <displayFormat>SRE-{000000}</displayFormat>
+        <label>Export#</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Scheduled Report Export Jobs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

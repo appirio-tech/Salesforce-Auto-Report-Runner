@@ -1,0 +1,56 @@
+<apex:page standardController="Scheduled_Report_Export__c"  extensions="scheduledReportExportControllerExtension">
+
+<apex:form >
+	<apex:sectionHeader title="Scheduled Report Export" subtitle="{!Scheduled_Report_Export__c.Name}"/>
+	
+	<apex:pageBlock title="Scheduled Report Export" mode="maindetail">
+		<apex:pageBlockButtons >
+            <apex:commandButton action="{!edit}" value="Edit"/>
+         	<apex:commandButton action="{!delete}" value="Delete"/>
+         	<apex:commandButton action="{!startExportReport}" value="Export Report"/>
+        </apex:pageBlockButtons>
+        <apex:pageblocksection columns="2" id="sreport">  
+        	<apex:pageBlockSectionItem rendered="false">
+        		<apex:outputLabel value="Report" />
+	        	<apex:outputText value="{!Scheduled_Report_Export__c.Report_Id__c}" />
+             </apex:pageBlockSectionItem> 
+             <apex:pageBlockSectionItem id="reportName">
+	             <apex:outputLabel value="Name" />
+	        	 <apex:outputText value="{!report.Name}" />
+             </apex:pageBlockSectionItem>
+             <apex:outputfield value="{!Scheduled_Report_Export__c.Active__c}" />
+             <apex:pageBlockSectionItem id="reportDescription">
+	             <apex:outputLabel value="Description" />
+	        	 <apex:outputText value="{!report.Description}" />
+             </apex:pageBlockSectionItem>
+             <apex:outputfield value="{!Scheduled_Report_Export__c.OwnerId}" />
+    	</apex:pageblocksection>    
+    	<apex:pageblocksection columns="2" id="schedule" title="Schedule">  
+        	<apex:repeat value="{!$ObjectType.Scheduled_Report_Export__c.FieldSets.Schedule}" var="f">  
+        		<apex:outputField value="{!Scheduled_Report_Export__c[f]}" />
+       		</apex:repeat>  
+    	</apex:pageblocksection>
+    	<apex:pageblocksection columns="2" id="recipient" title="Email Recipients"> 
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel value="Recipients" />
+				<apex:outputPanel id="addRecepients">
+				    <apex:repeat value="{!Recipients}" var="recipient" id="recipients">
+				        <apex:outputLink value="/{!recipient.Recipient__c}" id="recIdUser" title="View {!recipient.Name}'s profile" rendered="{!recipient.Recipient__c!=null}">{!recipient.Name}</apex:outputLink>
+				        <apex:outputText value="{!recipient.Custom_Email__c}" id="recIdEmail" title="{!recipient.Custom_Email__c}" rendered="{!recipient.Custom_Email__c!=null}" />
+				        <apex:outputText value=" " />
+				    </apex:repeat>   		
+	  			</apex:outputPanel>
+			</apex:pageBlockSectionItem>
+			<apex:outputField value="{!Scheduled_Report_Export__c.Send_to_me__c}" />
+			<apex:pageBlockSectionItem />
+			
+		</apex:pageblocksection>
+		<apex:pageblocksection columns="2" id="addOptions" title="Additional Options">
+			<apex:outputField value="{!Scheduled_Report_Export__c.Email_Template_Id__c}" />
+            <apex:outputField value="{!Scheduled_Report_Export__c.Save_Result__c}" />
+		</apex:pageblocksection> 
+	</apex:pageBlock>
+</apex:form>
+
+	<apex:relatedList subject="{!Scheduled_Report_Export__c.Id}" list="Export_Jobs__r" />
+</apex:page>

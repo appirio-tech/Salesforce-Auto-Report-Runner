@@ -1,0 +1,58 @@
+<apex:component controller="autoCompleteController">
+  <!-- JQuery Files -->
+  <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" />
+  <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" />
+  <apex:stylesheet value="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css"/>
+  
+  <!-- Attributes Required For Component -->
+  <apex:attribute name="objectname" description="The object name you want to look for."     type="String" required="true"/>
+  <apex:attribute name="additionalfield" description="Any additional fields you'd like to search and include in the display."     type="String" required="false"/>
+  <apex:attribute name="autocomplete_textbox" description="The ID for the Autocomplete List Textbox."     type="String" required="true"/>
+
+  <script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function() {
+
+        var sObjects;
+        var queryTerm;
+
+        j$(esc('{!autocomplete_textbox}')).autocomplete({
+            minLength: 2,
+            source: function(request, response) {
+                        queryTerm = request.term;
+                        autoCompleteController.findSObjects("{!objectname}", request.term, "{!additionalfield}", function(result, event){
+                            if(event.type == 'exception') {
+                                  alert(event.message);
+                            } else {
+                                 sObjects = result;
+                                 response(sObjects);
+                            }
+                        });
+                   },
+            focus: function( event, ui ) {
+                    j$(esc('{!autocomplete_textbox}')).val( ui.item.Name );
+                    return false;
+                    },
+            select: function( event, ui ) {
+                        j$(esc('{!autocomplete_textbox}')).val( ui.item.Name );
+                        j$(esc('{!autocomplete_textbox}_lkid')).val( ui.item.Id );
+                        j$(esc('{!autocomplete_textbox}_lkold')).val( ui.item.Name );
+                        return false;
+                    },
+         })
+         .data( "autocomplete" )._renderItem = function( ul, item ) {
+            var entry = "<a>" + item.Name + "</a>";
+            entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+            return j$( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( entry )
+                .appendTo( ul );
+        };
+    });
+
+    function esc(myid) {
+           return '#' + myid.replace(/(:|\.)/g,'\\\\$1');
+    }
+
+  </script>
+</apex:component>
