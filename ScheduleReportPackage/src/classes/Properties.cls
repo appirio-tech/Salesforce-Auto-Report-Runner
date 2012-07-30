@@ -1,7 +1,7 @@
 public with sharing class Properties {
 	
 	private static String getStringValue(String key) {
-		String retVal;
+		String retVal = '';
 		
 		try {
 			Properties__c prop = Properties__c.getValues(key);
@@ -13,7 +13,7 @@ public with sharing class Properties {
 		return retVal;
 	}
 	private static Boolean getBooleanValue(String key) {
-		Boolean retVal;
+		Boolean retVal = false;
 		
 		try {
 			if (getStringValue(key).equals('true')) {

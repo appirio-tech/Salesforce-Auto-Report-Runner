@@ -1,11 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Scheduled Report Exports</fullName>
-    <description>Scheduled Report Exports
-http://www.cloudspokes.com/challenge_detail.html?contestID=344</description>
-    <types>
+	<types>
+		<members>autoCompleteController</members>
         <members>ExportReport</members>
+		<members>Properties</members>
+		<members>scheduledReportControllerExtension_test</members>
+		<members>scheduledReportExport</members>
+		<members>scheduledReportExportControllerExtension</members>
+		<members>ScheduleReportExport</members>
+		<members>ScheduleReportExport_test</members>
+		<members>SingleReportExport</members>
         <name>ApexClass</name>
     </types>
+	<types>
+		<members>autoComplete2</members>
+		<name>ApexComponent</name>
+	</types>
+	<types>
+		<members>Scheduled_Report_Templates</members>
+		<name>EmailTemplate</name>
+	</types>
+	<types>
+		<members>Scheduled_Report_Export__c-Scheduled Report Export Layout</members>
+		<members>Scheduled_Report_Export_Job__c-Scheduled Report Export Job Layout</members>
+		<members>Scheduled_Report_Export_Recipient__c-Scheduled Report Export Recepient Layout</members>
+		<name>Layout</name>
+	</types>
+	<types>
+		<members>Properties__c</members>
+		<members>Scheduled_Report_Export__c</members>
+		<members>Scheduled_Report_Export_Job__c</members>
+		<members>Scheduled_Report_Export_Recipient__c</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>detailScheduledReportExport</members>
+		<members>editScheduledReportExport</members>
+		<name>ApexPage</name>
+	</types>
+	<types>
+		<members>ScheduledReportAfterUpdate</members>
+		<members>ScheduledReportExportAfterInsert</members>
+		<members>ScheduledReportExportBeforeInsert</members>
+		<members>ScheduledReportExportBeforeUpdate</members>
+		<name>ApexTrigger</name>
+	</types>
+	<types>
+		<members>Scheduled_Report_Export__c</members>
+		<name>Workflow</name>
+	</types>
     <version>23.0</version>
 </Package>
