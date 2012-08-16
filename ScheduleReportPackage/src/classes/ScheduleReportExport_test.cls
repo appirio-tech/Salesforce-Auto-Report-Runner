@@ -83,7 +83,7 @@ private class ScheduleReportExport_test {
 		
 		Id reportId = schReports.Report_Id__c;
 
-        ScheduleReportExport.doExport('123', jobId, schReports.Id, reportId, schReports.Name, null, null, false);
+        ScheduleReportExport.doExport('123', jobId, schReports.Id, reportId, '', schReports.Name, null, null, false);
         
         Test.StopTest();
         
