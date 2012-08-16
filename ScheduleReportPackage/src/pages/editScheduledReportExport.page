@@ -73,6 +73,26 @@
 	             </apex:selectList>
             </apex:pageBlockSectionItem>
             <apex:inputField value="{!Scheduled_Report_Export__c.Save_Result__c}" />
+           	
+           	<apex:pageBlockSectionItem >
+	           	<apex:outputLabel value="Add Query String Params" />
+	           	<apex:outputPanel id="addQueryStringParams">
+	           		<apex:actionRegion >
+		           	<apex:inputText value="{!queryStringParamAddValue}"/>
+		          	<apex:commandButton value="Add" action="{!addQueryStringParam}" reRender="addQueryStringParams" />
+		          	<br />
+		          	<apex:repeat value="{!queryStringParamList}" var="param" id="paramList">
+		          		<apex:outputText value="{!param.key}={!param.value}" id="param" title="{!param.key}={!param.value}" />
+				        <apex:commandLink action="{!removeQueryStringParam}" id="removeQueryStringParam" rerender="addQueryStringParams" title="Remove parameter">
+				        	<apex:image url="/img/func_icons/remove12_on.gif" />
+				        	<apex:param value="{!param.key}" name="paramKey" assignTo="{!queryStringParamRemoveKey}" />
+				        </apex:commandLink>
+				    </apex:repeat>
+	          		</apex:actionRegion>
+	          	</apex:outputPanel>
+          	</apex:pageBlockSectionItem>
+          	<!-- Must reference these fields on VF page to have access in controller. -->
+            <apex:outputField value="{!Scheduled_Report_Export__c.Query_String_Params__c}" rendered="false"/>
 		</apex:pageblocksection> 
 	</apex:pageBlock>
 </apex:form>

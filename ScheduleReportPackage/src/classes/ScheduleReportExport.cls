@@ -14,7 +14,7 @@ public with sharing class ScheduleReportExport {
 	
 	public void runScheduledReports() {
 		//return all jobs that are active and in date
-		List<Scheduled_Report_Export__c> schReports = [SELECT Id, Name, OwnerId, Owner.Email, Report_Id__c, Frequency__c, Day_of_the_week__c, Preferred_Time_of_Day__c, Send_to_me__c, Email_Template_Id__c, Save_Result__c
+		List<Scheduled_Report_Export__c> schReports = [SELECT Id, Name, OwnerId, Owner.Email, Report_Id__c, Frequency__c, Day_of_the_week__c, Preferred_Time_of_Day__c, Send_to_me__c, Email_Template_Id__c, Save_Result__c, Query_String_Params__c
 													   FROM Scheduled_Report_Export__c 
 													   WHERE Active__c = true AND 
 													   (Start_Date__c <= TODAY AND End_Date__c >= TODAY)];
@@ -38,7 +38,7 @@ public with sharing class ScheduleReportExport {
 	
 	public void runSingleReport(Id scheduledReportId) {
 		//running a single report ignores all frequency checks and gets marked as manual
-		List<Scheduled_Report_Export__c> schReports = [SELECT Id, Name, OwnerId, Owner.Email, Active__c, Report_Id__c, Frequency__c, Day_of_the_week__c, Preferred_Time_of_Day__c, Send_to_me__c, Email_Template_Id__c, Save_Result__c
+		List<Scheduled_Report_Export__c> schReports = [SELECT Id, Name, OwnerId, Owner.Email, Active__c, Report_Id__c, Frequency__c, Day_of_the_week__c, Preferred_Time_of_Day__c, Send_to_me__c, Email_Template_Id__c, Save_Result__c, Query_String_Params__c
 													   FROM Scheduled_Report_Export__c 
 													   WHERE Id = :scheduledReportId LIMIT 1];
 													   
@@ -67,7 +67,7 @@ public with sharing class ScheduleReportExport {
 		    	
 		    	if (jobId != null) {
 		    		//executes future method one at a item for each job, each job has own future call
-	    			doExport(UserInfo.getSessionId(), jobId, schReport.Id, schReport.Report_Id__c, schReport.Name, getToAddresses(schReport), schReport.Email_Template_Id__c, schReport.Save_Result__c);
+	    			doExport(UserInfo.getSessionId(), jobId, schReport.Id, schReport.Report_Id__c, schReport.Query_String_Params__c, schReport.Name, getToAddresses(schReport), schReport.Email_Template_Id__c, schReport.Save_Result__c);
 		    	} else {
 		    		system.debug('JOB_NOT_CREATED');
 		    		throw new customException('JOB_NOT_CREATED');
@@ -208,7 +208,7 @@ public with sharing class ScheduleReportExport {
 	*/
 	
 	@future (callout=true)
-	public static void doExport(String sid, Id jobId, Id scheduledEmailId, Id reportId, String reportName, Set<String> toAddresses, String emailTemplateId, Boolean saveResult) {
+	public static void doExport(String sid, Id jobId, Id scheduledEmailId, Id reportId, String queryStringParams, String reportName, Set<String> toAddresses, String emailTemplateId, Boolean saveResult) {
 		
 		try {
 			//checks that an action is defined - eiter email or save results
@@ -218,11 +218,13 @@ public with sharing class ScheduleReportExport {
 			
 			ExportReport report = new ExportReport();
 			//return the blobcsv file to be attached and saved
-			Blob reportCSV = report.getReportAsCSV(reportId, null);
+			System.debug('Getting Report as CSV: ' + reportId);
+			Blob reportCSV = report.getReportAsCSV(reportId, queryStringParams, null);
 			
 			//runs the report without headers and scrapes the results to include in body of emails
 			//report scrapping will be added to end of any template
-			String reportHTML = report.getReportAsHTML(reportId, null);
+			System.debug('Getting Report as HTML: ' + reportId);
+			String reportHTML = report.getReportAsHTML(reportId, queryStringParams, null);
 			
 			//sends email with attachment and report scrapping
 			sendReportAsEmail(reportCSV, reportName, reportHTML, toAddresses, emailTemplateId);
@@ -254,6 +256,9 @@ public with sharing class ScheduleReportExport {
 				String[] ccAddresses = new String[] {complianceEmail};
 					
 				Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+				mail.setSenderDisplayName('');
+                mail.setReplyTo('noreply@chatter.salesforce.com');
+                mail.setSaveAsActivity(false); 
 				mail.setToAddresses(arrToAddresses);
 				//added option to define compliance email address so they can monitor external sends
 				if (ccCompliance) mail.setCcAddresses(ccAddresses);
@@ -313,6 +318,7 @@ public with sharing class ScheduleReportExport {
    			for (Scheduled_Report_Export__c scheduledEmail : scheduledEmails) {
    				Scheduled_Report_Export_Job__c job = new Scheduled_Report_Export_Job__c();
 	   			job.Scheduled_Report_Export__c = scheduledEmail.Id;
+	   			job.Query_String_Params__c = scheduledEmail.Query_String_Params__c;
 	   			job.Type__c = ExecutionMethod;
 	   			job.Submitted_Date__c = Datetime.now();
 	   			jobs.add(job);

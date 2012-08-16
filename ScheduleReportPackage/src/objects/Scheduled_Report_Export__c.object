@@ -7,7 +7,6 @@
     <actionOverrides>
         <actionName>Clone</actionName>
         <content>editScheduledReportExport</content>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
@@ -17,7 +16,6 @@
     <actionOverrides>
         <actionName>Edit</actionName>
         <content>editScheduledReportExport</content>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
@@ -27,7 +25,6 @@
     <actionOverrides>
         <actionName>New</actionName>
         <content>editScheduledReportExport</content>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
@@ -37,40 +34,15 @@
     <actionOverrides>
         <actionName>View</actionName>
         <content>detailScheduledReportExport</content>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Details of user defined scheduled exports of reports.</description>
     <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
-    <fieldSets>
-        <fullName>Schedule</fullName>
-        <description>Fields used for setting the export schedule</description>
-        <displayedFields>
-            <field>Start_Date__c</field>
-            <isRequired>true</isRequired>
-        </displayedFields>
-        <displayedFields>
-            <field>End_Date__c</field>
-            <isRequired>true</isRequired>
-        </displayedFields>
-        <displayedFields>
-            <field>Frequency__c</field>
-            <isRequired>true</isRequired>
-        </displayedFields>
-        <displayedFields>
-            <field>Preferred_Time_of_Day__c</field>
-            <isRequired>true</isRequired>
-        </displayedFields>
-        <displayedFields>
-            <field>Day_of_the_week__c</field>
-            <isRequired>false</isRequired>
-        </displayedFields>
-        <label>Schedule</label>
-    </fieldSets>
     <fields>
         <fullName>Active__c</fullName>
         <defaultValue>false</defaultValue>
@@ -268,6 +240,16 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Query_String_Params__c</fullName>
+        <description>Parameters to place on the query string when requesting the report to export.</description>
+        <externalId>false</externalId>
+        <label>Query String Params</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Report_Id__c</fullName>
         <externalId>true</externalId>
         <label>Report Id</label>
@@ -356,8 +338,8 @@
         <customTabListAdditionalFields>End_Date__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>Frequency__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>CREATEDBY_USER</customTabListAdditionalFields>
-        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <lookupDialogsAdditionalFields>Active__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>Start_Date__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>End_Date__c</lookupDialogsAdditionalFields>

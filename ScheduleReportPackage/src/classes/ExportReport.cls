@@ -24,6 +24,7 @@ public with sharing class ExportReport {
 		HttpRequest req = new HttpRequest();
 	    req.setEndpoint(endPoint);
 	    req.setMethod('GET');
+	    req.setTimeout(30000);
 	    //if session id is provided add to the cookie so the webservice is authenticated
 	    if (sid!=null) req.setHeader('Cookie','sid='+sid);
 	    return req;
@@ -108,6 +109,8 @@ public with sharing class ExportReport {
 		if (un == null || pw == null) {
 			throw new customException('Login credentials not defined in custom setting');
 		}
+		if (sfDomain.lastIndexOf('/') != sfDomain.length() - 1)
+			sfDomain += '/';
 		//login to salesforce using web callout to scrape for the session id
 		String authURL = sfDomain + '?un=' + un + '&pw=' + pw;
 		String sid = handleRedirectRequest(authURL);
@@ -116,17 +119,31 @@ public with sharing class ExportReport {
    }
    
    public blob getReportAsCSV(Id reportId, TestPath path) {
+   		return this.getReportAsCSV(reportId, null, path);
+   }
+   
+   public blob getReportAsCSV(Id reportId, String queryStringParams, TestPath path) {
    		String sid = getSessionId();
    		
    		//url format to return an exported report in csv format
    		String uri = sfDomain + reportId + '?export=1&enc=UTF-8&xf=csv';
+   		if (queryStringParams != null)
+   			uri += queryStringParams;
    		return Blob.valueOf(getReport(uri, 'text/csv; charset=UTF-8', sid, path));
    }
+   
    public String getReportAsHTML(Id reportId, TestPath path) {
+   		return this.getReportAsHTML(reportId, null, path);
+   }
+   
+   public String getReportAsHTML(Id reportId, String queryStringParams, TestPath path) {
    		String sid = getSessionId();
    		
    		//url format to return report without headers
    		String uri = sfDomain + reportId + '?isdtp=nv';
+   		if (queryStringParams != null)
+   			uri += queryStringParams;
+   		System.debug('uri: ' + uri);
    		String body = getReport(uri, 'text/html; charset=UTF-8', sid, path);
    		if (body.indexOf('<div class="bGeneratedReport') > 0) {
    			//return just the body of the report output

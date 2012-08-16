@@ -35,6 +35,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>History of Scheduled Report Export Jobs</description>
     <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -68,6 +69,16 @@ IF( Results_Sent__c , IMAGE(&apos;/img/func_icons/util/mailFrontEnv16.gif&apos;,
         <fullName>Failure_Reason__c</fullName>
         <externalId>false</externalId>
         <label>Failure Reason</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Query_String_Params__c</fullName>
+        <description>Parameters to put on the query string when requesting the report to export.</description>
+        <externalId>false</externalId>
+        <label>Query String Params</label>
         <length>255</length>
         <required>false</required>
         <type>Text</type>

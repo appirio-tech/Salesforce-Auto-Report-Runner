@@ -48,6 +48,7 @@
 		<apex:pageblocksection columns="2" id="addOptions" title="Additional Options">
 			<apex:outputField value="{!Scheduled_Report_Export__c.Email_Template_Id__c}" />
             <apex:outputField value="{!Scheduled_Report_Export__c.Save_Result__c}" />
+            <apex:outputField value="{!Scheduled_Report_Export__c.Query_String_Params__c}"/>
 		</apex:pageblocksection> 
 	</apex:pageBlock>
 </apex:form>

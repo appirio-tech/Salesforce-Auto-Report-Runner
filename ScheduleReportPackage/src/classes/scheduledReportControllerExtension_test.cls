@@ -110,4 +110,96 @@ private class scheduledReportControllerExtension_test {
         recipients = ext.getRecipients();
         system.assertEquals(0, recipients.size());
     }
+    
+    static testMethod void test_buildParamList() {
+    	//Create test data
+    	String queryString = '&pv0=value+1&pv1=value+2';
+    	
+    	//Invoke functionality
+    	Test.startTest();
+    		List<scheduledReportExportControllerExtension.QueryStringParam> paramList
+    			= scheduledReportExportControllerExtension.buildQueryStringParamList(queryString);
+    	Test.stopTest();
+    	
+    	//Check results
+    	System.assertEquals(2, paramList.size());
+    	System.assertEquals('pv0', paramList.get(0).key);
+    	System.assertEquals('value+1', paramList.get(0).value);
+    	System.assertEquals('pv1', paramList.get(1).key);
+    	System.assertEquals('value+2', paramList.get(1).value);
+    }
+    
+    static testMethod void test_deserializeParamList() {
+    	//Create test data
+    	List<scheduledReportExportControllerExtension.QueryStringParam> paramList
+    			= new List<scheduledReportExportControllerExtension.QueryStringParam>();
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key1', 'value 1'));
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key2', 'value+2'));
+    	
+    	
+    	//Invoke functionality
+    	Test.startTest();
+    		String actualResult = scheduledReportExportControllerExtension.deserializeParamList(paramList);
+    	Test.stopTest();
+    	
+    	//Check results
+    	String expectedResult = '&key1=value 1&key2=value+2';
+    	System.assertEquals(expectedResult, actualResult);
+    }
+    
+    static testMethod void test_addParam() {
+    	//Create test data
+    	Scheduled_Report_Export__c schReport = createTestScheduledReportExport('Daily', null, null);
+        PageReference pr = Page.editScheduledReportExport;        
+        ApexPages.StandardController sc = new ApexPages.StandardController(schReport);
+        scheduledReportExportControllerExtension ext = new scheduledReportExportControllerExtension(sc);
+        Test.setCurrentPageReference(pr);
+    	
+    	List<scheduledReportExportControllerExtension.QueryStringParam> paramList
+    			= new List<scheduledReportExportControllerExtension.QueryStringParam>();
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key1', 'value 1'));
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key2', 'value+2'));
+    	
+    	
+    	//Invoke functionality
+    	Test.startTest();
+    		ext.queryStringParamAddValue = 'value 1';
+    		ext.addQueryStringParam();
+    		ext.queryStringParamAddValue = 'value 2';
+    		ext.addQueryStringParam();
+    	Test.stopTest();
+    	
+    	//Check results
+    	String expectedResult = '&pv0=value+1&pv1=value+2';
+    	System.assertEquals(expectedResult, ext.schReport.Query_String_Params__c);
+    }
+    
+    static testMethod void test_removeParam() {
+    	//Create test data
+    	Scheduled_Report_Export__c schReport = createTestScheduledReportExport('Daily', null, null);
+        PageReference pr = Page.editScheduledReportExport;        
+        ApexPages.StandardController sc = new ApexPages.StandardController(schReport);
+        scheduledReportExportControllerExtension ext = new scheduledReportExportControllerExtension(sc);
+        Test.setCurrentPageReference(pr);
+    	
+    	List<scheduledReportExportControllerExtension.QueryStringParam> paramList
+    			= new List<scheduledReportExportControllerExtension.QueryStringParam>();
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key1', 'value 1'));
+    	paramList.add(new scheduledReportExportControllerExtension.QueryStringParam('key2', 'value+2'));
+    	
+    	
+    	//Invoke functionality
+    	Test.startTest();
+    		ext.queryStringParamAddValue = 'value 1';
+    		ext.addQueryStringParam();
+    		ext.queryStringParamAddValue = 'value 2';
+    		ext.addQueryStringParam();
+    		ext.queryStringParamRemoveKey = 'pv0';
+    		ext.removeQueryStringParam();
+    	Test.stopTest();
+    	
+    	//Check results
+    	String expectedResult = '&pv0=value+2';
+    	System.assertEquals(expectedResult, ext.schReport.Query_String_Params__c);
+    }
 }
